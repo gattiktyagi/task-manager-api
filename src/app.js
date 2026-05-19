@@ -8,7 +8,7 @@ module.exports = app;
 const tasks = [];
 
 app.get('/tasks',(req,res)=>{
-    res.status(201).json({
+    res.status(200).json({
         "message":"All tasks fetched successfully",
         "task":tasks
     });
