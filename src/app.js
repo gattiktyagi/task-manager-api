@@ -10,6 +10,13 @@ const tasks = [];
 app.get('/tasks',(req,res)=>{
     res.status(200).json({
         "message":"All tasks fetched successfully",
-        "task":tasks
+        "tasks":tasks
+    });
+})
+
+app.post('/tasks',(req,res)=>{
+    tasks.push(req.body);
+    res.status(201).json({
+        "message":"New task created successfully",
     });
 })
