@@ -20,3 +20,12 @@ app.post('/tasks',(req,res)=>{
         "message":"New task created successfully",
     });
 })
+
+app.delete('/tasks/:id',(req,res)=>{
+    let taskId=req.params.id;
+    tasks.splice(taskId,1);
+    res.status(200).json({
+        "message":"Task deleted successfully"
+    })
+
+})
