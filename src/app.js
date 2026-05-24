@@ -4,6 +4,11 @@ const taskRoutes = require('./routes/task.routes');
 
 app.use(express.json());
 
+
+app.use('/api/tasks',taskRoutes);
+
+module.exports = app;
+
 // app.get('/tasks',(req,res)=>{
 //     res.status(200).json({
 //         "message":"All tasks fetched successfully",
@@ -45,7 +50,3 @@ app.use(express.json());
 //         "Updated Task":tasks[taskId]
 //     })
 // })
-
-app.use('/api/tasks',taskRoutes);
-
-module.exports = app;
