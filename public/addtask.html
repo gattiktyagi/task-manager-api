@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Add Task</h1>
+    <form action="localhost:3000/api/tasks/" method="post">
+        <label for="title">Title:</label>
+        <input type="text" required name="title" id="title" maxlength="50" size="50"><br><br>
+        <label for="description">Description:</label>
+        <br>
+        <textarea name="description" id="description" rows="4" cols="55" placeholder="Optional"></textarea> <br>
+        <button type="submit">Add Task</button>
+    </form>
+
+</body>
+</html>
