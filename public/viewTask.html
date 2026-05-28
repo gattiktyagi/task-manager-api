@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Task</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <h1>All Tasks are as follows:</h1>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Completed</th>
+                <th>Created_At</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody id="task-list">
+
+        </tbody>
+    </table>
+      <script>
+        const tbody = document.getElementById('task-list');
+
+        // Function to get data from your Express backend
+        async function loadTasks() {
+            try {
+                // Hits your router.get('/', getAllTasks) endpoint
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+
+                if (data.success && data.tasks) {
+                    tbody.innerHTML = ''; // Clear existing rows if any
+
+                    data.tasks.forEach(task => {
+                        const rowHTML = `
+                            <tr>
+                                <td>${task.id}</td>
+                                <td>${task.title}</td>
+                                <td>${task.completed ? '✅ Yes' : '❌ No'}</td>
+                                <td>${new Date(task.created_at).toLocaleString()}</td>
+                                <td>${task.description || '<em>No description</em>'}</td>
+                            </tr>
+                        `;
+                        tbody.insertAdjacentHTML('beforeend', rowHTML);
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to fetch tasks:', error);
+                tbody.innerHTML = `<tr><td colspan="5" style="color: red; text-align: center;">Error loading tasks.</td></tr>`;
+            }
+        }
+
+        // Run the function automatically when the page opens
+        window.addEventListener('DOMContentLoaded', loadTasks);
+    </script>
+</body>
+</html>

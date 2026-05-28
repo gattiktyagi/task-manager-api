@@ -1,9 +1,11 @@
 const express = require('express');
 const app=express();
 const taskRoutes = require('./routes/task.routes');
+const path = require('path')
 
 app.use(express.json());
-
+app.use(express.static('public'));
+app.use(express.urlencoded({extended:true}));
 
 app.use('/api/tasks',taskRoutes);
 

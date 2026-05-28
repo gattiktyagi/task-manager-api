@@ -11,10 +11,11 @@ const getAllTasks = async (req,res) => {
 const postTask = async (req,res) => {
     const {title, description} = req.body;
     const newTask = await addTask(title,description);
-    res.status(201).json({
-        success:true,
-        newTask:newTask
-    });
+    // res.status(201).json({
+    //     success:true,
+    //     newTask:newTask
+    // });
+    res.redirect('/index.html');
 };
 
 module.exports = {getAllTasks,postTask};
