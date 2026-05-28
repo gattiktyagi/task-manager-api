@@ -11,7 +11,7 @@ const addTaskDB = async(title , description )=>{
     const newTask = await pool.query(
         "insert into tasks(title, description) values ($1,$2) returning *",[title,description]
     );
-    return newTask.rows;
+    return newTask.rows[0];
 };
 
 module.exports = {fetchAllTasksDB, addTaskDB};

@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    button{
+    height: 40px;
+    width: 100px;
+    padding-left: px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: medium;
+    font-weight: bold;
+    /* margin: 50px; */
+    border-radius: 25px;
+    /* background-color: rgb(59, 250, 193); */
+    background-image: linear-gradient(to right,rgb(241, 132, 132),rgb(245, 214, 115));
+    
+}
+button:hover{
+    background-image: linear-gradient(to right,rgb(245, 54, 54),rgb(240, 167, 71));
+}
+</style>
 <body>
     <h1>Add Task</h1>
     <form action="http://localhost:3000/api/tasks/" method="post">
@@ -13,7 +31,7 @@
         <label for="description">Description:</label>
         <br>
         <textarea name="description" id="description" rows="4" cols="55" placeholder="Optional"></textarea> <br>
-        <button type="submit">Add Task</button>
+        <button type="submit" id="add-task">Add Task</button>
     </form>
 
 </body>
