@@ -1,4 +1,4 @@
-const {fetchAllTasks,addTask} =require('../services/task.service');
+const {fetchAllTasks,addTask, removeTask} =require('../services/task.service');
 
 const getAllTasks = async (req,res) => {
     const tasks =await fetchAllTasks();
@@ -18,4 +18,13 @@ const postTask = async (req,res) => {
     res.redirect('/index.html');
 };
 
-module.exports = {getAllTasks,postTask};
+const deleteTask = async (req,res) => {
+    const taskId = req.params.id;
+    const deleteTask=await removeTask(taskId);
+    res.status(200).json({
+        message:"Task Deleted SuccessFully",
+        deletedTask:deleteTask
+    });
+};
+
+module.exports = {getAllTasks,postTask,deleteTask};

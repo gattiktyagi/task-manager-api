@@ -16,6 +16,7 @@
                 <th>Completed</th>
                 <th>Created_At</th>
                 <th>Description</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody id="task-list">
@@ -25,15 +26,25 @@
       <script>
         const tbody = document.getElementById('task-list');
 
-        // Function to get data from your Express backend
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
         async function loadTasks() {
             try {
-                // Hits your router.get('/', getAllTasks) endpoint
                 const response = await fetch('/api/tasks');
                 const data = await response.json();
 
                 if (data.success && data.tasks) {
-                    tbody.innerHTML = ''; // Clear existing rows if any
+                    tbody.innerHTML = '';
 
                     data.tasks.forEach(task => {
                         const rowHTML = `
@@ -43,6 +54,9 @@
                                 <td>${task.completed ? '✅ Yes' : '❌ No'}</td>
                                 <td>${new Date(task.created_at).toLocaleString()}</td>
                                 <td>${task.description || '<em>No description</em>'}</td>
+                                <td>
+                                    <button class="delete-btn" data-id="${task.id}">Delete</button>
+                                </td>
                             </tr>
                         `;
                         tbody.insertAdjacentHTML('beforeend', rowHTML);
@@ -50,12 +64,67 @@
                 }
             } catch (error) {
                 console.error('Failed to fetch tasks:', error);
-                tbody.innerHTML = `<tr><td colspan="5" style="color: red; text-align: center;">Error loading tasks.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="color: red; text-align: center;">Error loading tasks.</td></tr>`;
+                showToast('Failed to load tasks', 'error');
             }
         }
 
-        // Run the function automatically when the page opens
-        window.addEventListener('DOMContentLoaded', loadTasks);
+        tbody.addEventListener('click', async (e) => {
+            if (!e.target.classList.contains('delete-btn')) return;
+
+            const id = e.target.dataset.id;
+            const row = e.target.closest('tr');
+
+            // nicer inline confirmation using a toast-like modal
+            const confirmBox = document.createElement('div');
+            confirmBox.className = 'toast info';
+            confirmBox.style.right = '18px';
+            confirmBox.style.bottom = '90px';
+            confirmBox.innerHTML = `
+                Delete task <strong>#${id}</strong>?
+                <div style="margin-top:10px; display:flex; gap:8px;">
+                    <button id="confirm-delete-yes" style="padding:6px 10px; border-radius:999px; border:0; cursor:pointer; background:#fff; color:#0f172a; font-weight:700;">Yes</button>
+                    <button id="confirm-delete-no" style="padding:6px 10px; border-radius:999px; border:0; cursor:pointer; background:#1e293b; color:#fff; font-weight:700;">No</button>
+                </div>
+            `;
+            document.body.appendChild(confirmBox);
+
+            const yesBtn = confirmBox.querySelector('#confirm-delete-yes');
+            const noBtn = confirmBox.querySelector('#confirm-delete-no');
+
+            const removeConfirm = () => confirmBox.remove();
+
+            yesBtn.addEventListener('click', async () => {
+                removeConfirm();
+
+                try {
+                    const response = await fetch(`/api/tasks/${id}`, {
+                        method: 'DELETE'
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        row.remove();
+                        showToast(`Task #${id} deleted`, 'success');
+                    } else {
+                        showToast(result.message || 'Delete failed', 'error');
+                    }
+                } catch (error) {
+                    console.error('Delete failed:', error);
+                    showToast('Delete request failed', 'error');
+                }
+            });
+
+            noBtn.addEventListener('click', () => {
+                removeConfirm();
+                showToast('Delete cancelled', 'info');
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadTasks();
+            setInterval(loadTasks, 2000); // auto refresh every 5 seconds
+        });
     </script>
 </body>
 </html>
