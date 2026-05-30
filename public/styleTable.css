@@ -64,3 +64,27 @@ tr:hover{
 .toast.success { background: #16a34a; }
 .toast.error   { background: #dc2626; }
 .toast.info    { background: #2563eb; }
+
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-container h1 {
+    margin: 0;
+}
+
+#addTaskbtn {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-style: oblique;
+    background-color: aqua;
+    color: rgb(0, 0, 0);
+}
+#addTaskbtn:hover{
+    background-color: rgb(13, 182, 182);
+}
