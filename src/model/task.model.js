@@ -20,4 +20,13 @@ const removeTaskDB = async(id)=>{
     return deleteTask.rows[0];
 };
 
-module.exports = {fetchAllTasksDB, addTaskDB, removeTaskDB};
+const updateTaskDB=async(id)=>{
+    const update = await pool.query(
+        `update tasks
+        set completed = not completed
+        where id=$1`,[id]
+    );
+    return update;
+};
+
+module.exports = {fetchAllTasksDB, addTaskDB, removeTaskDB,updateTaskDB};
