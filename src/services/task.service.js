@@ -1,4 +1,4 @@
-const {fetchAllTasksDB, addTaskDB,removeTaskDB} = require('../model/task.model');
+const {fetchAllTasksDB, addTaskDB,removeTaskDB, updateTaskDB} = require('../model/task.model');
 
 const fetchAllTasks = async ()=>{ 
     return await fetchAllTasksDB();
@@ -17,4 +17,12 @@ const removeTask = async (id)=>{
     return deletedTask;
 };
 
-module.exports = {fetchAllTasks,addTask, removeTask};
+const updateTaskStatus = async(id)=>{
+    if(!id)throw new Error('Id Required to update Task status');
+    
+    const update= await updateTaskDB(id);
+    if(!update)throw new Error('Unable to update task');
+    return update;
+}
+
+module.exports = {fetchAllTasks,addTask, removeTask,updateTaskStatus};
